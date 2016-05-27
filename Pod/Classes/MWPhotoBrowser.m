@@ -1600,20 +1600,20 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
             self.activityViewController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
             
             // Show loading spinner after a couple of seconds
-            double delayInSeconds = 2.0;
+            /*double delayInSeconds = 2.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 if (self.activityViewController) {
                     [self showProgressHUDWithMessage:nil];
                 }
-            });
+            });*/
 
             // Show
             typeof(self) __weak weakSelf = self;
             [self.activityViewController setCompletionHandler:^(NSString *activityType, BOOL completed) {
                 weakSelf.activityViewController = nil;
                 [weakSelf hideControlsAfterDelay];
-                [weakSelf hideProgressHUD:YES];
+                //[weakSelf hideProgressHUD:YES];
             }];
             // iOS 8 - Set the Anchor Point for the popover
             if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8")) {
