@@ -375,6 +375,12 @@
     [self layoutIfNeeded];
 }
 
+-(void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale {
+    if (scale <= self.minimumZoomScale) {
+        self.scrollEnabled = NO;
+    }
+}
+
 #pragma mark - Tap Detection
 
 - (void)handleSingleTap:(CGPoint)touchPoint {
