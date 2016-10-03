@@ -66,6 +66,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     _previousPageIndex = NSUIntegerMax;
     _currentVideoIndex = NSUIntegerMax;
     _displayActionButton = YES;
+    _displayDeleteButton = NO;
     _displayNavArrows = NO;
     _zoomPhotosToFill = YES;
     _performingLayout = NO; // Reset on view did appear
@@ -179,6 +180,9 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     if (self.displayActionButton) {
         _actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed:)];
     }
+    if (self.displayDeleteButton) {
+        _deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonPressed:)];
+    }
     
     // Update
     [self reloadData];
@@ -245,7 +249,12 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         hasItems = YES;
         [items addObject:[[UIBarButtonItem alloc] initWithImage:[UIImage imageForResourcePath:@"MWPhotoBrowser.bundle/UIBarButtonItemGrid" ofType:@"png" inBundle:[NSBundle bundleForClass:[self class]]] style:UIBarButtonItemStylePlain target:self action:@selector(showGridAnimated)]];
     } else {
-        [items addObject:fixedSpace];
+        if (_deleteButton) {
+            [items addObject: _deleteButton];
+        }
+        else {
+            [items addObject:fixedSpace];
+        }
     }
 
     // Middle - Nav
@@ -1629,6 +1638,24 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     }
     
 }
+
+- (void)deleteButtonPressed:(id)sender {
+    id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
+    if ([self numberOfPhotos] > 0) {
+        // If they have defined a delegate method then just message them
+        if ([self.delegate respondsToSelector:@selector(photoBrowser: deleteButtonPressedForPhotoAtIndex:)]) {
+            
+            // Let delegate handle things
+            [self.delegate photoBrowser:self deleteButtonPressedForPhotoAtIndex:_currentPageIndex];
+            
+        }
+        
+        // Keep controls shown
+        [self setControlsHidden:NO animated:YES permanent:YES];
+        
+    }
+}
+
 
 #pragma mark - Action Progress
 
