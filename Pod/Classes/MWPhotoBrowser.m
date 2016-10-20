@@ -270,7 +270,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     }
 
     // Right - Action
-    if (_actionButton && !(!hasItems && !self.navigationItem.rightBarButtonItem)) {
+    if (_actionButton && !(!hasItems && !self.navigationItem.leftBarButtonItem)) {
         [items addObject:_actionButton];
     } else {
         // We're not showing the toolbar so try and show in top right
